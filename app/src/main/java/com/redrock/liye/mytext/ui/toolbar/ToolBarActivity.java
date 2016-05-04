@@ -3,6 +3,7 @@ package com.redrock.liye.mytext.ui.toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +12,13 @@ import android.widget.Toast;
 
 import com.redrock.liye.mytext.R;
 import com.redrock.liye.mytext.ui.About.AboutActivity;
+import com.redrock.liye.mytext.ui.fragment.PageFragment;
+import com.redrock.liye.mytext.ui.fragment.PageFragment_news;
+import com.redrock.liye.mytext.ui.fragment.PageFragment_picture;
 import com.redrock.liye.mytext.ui.fragment.SimpleFragmentPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -23,6 +30,8 @@ public class ToolBarActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     private TabLayout tabLayout;
+
+    private List<Fragment> fragments = new ArrayList<Fragment>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +65,17 @@ public class ToolBarActivity extends AppCompatActivity {
         });
     }
     private void initFragment(){
-        pagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), this);
+        fragments.add(new PageFragment());
+        fragments.add(new PageFragment_news());
+        fragments.add(new PageFragment_picture());
+
+        pagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(),this,fragments);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(pagerAdapter);
+
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);    //绑定
+
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
